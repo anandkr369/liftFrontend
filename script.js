@@ -1,3 +1,41 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.querySelector(".hamburger-menu");
+  const menu = document.querySelector(".menu-items");
+
+  hamburger.addEventListener("click", function () {
+      hamburger.classList.toggle("active");
+      menu.classList.toggle("active");
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const themeToggle = document.getElementById("themeSwitcher");
+
+    // Check saved theme preference
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        themeToggle.checked = true;
+    } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        themeToggle.checked = false;
+    }
+
+    themeToggle.addEventListener("change", function () {
+        if (this.checked) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-theme", "light");
+            localStorage.setItem("theme", "light");
+        }
+    });
+});
+
+
+
 let previousFloor = null;
 
 async function fetchElevatorStatus() {

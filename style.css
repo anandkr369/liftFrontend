@@ -5,6 +5,10 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
+html {
+    transition: background-color 0.4s, color 0.4s;
+}
+
 :root {
     --primary-color: #1a73e8;
     --success-color: #34a853;
@@ -32,8 +36,8 @@
 
 body {
     background-color: var(--bg-color);
-    padding: 20px;
-    min-height: 100vh;
+    color: var(--text-primary);
+    transition: background-color 0.4s, color 0.4s;
 }
 
 .container {
@@ -256,9 +260,7 @@ h1 i {
     background: #1557b0;
 }
 
-/* Add your custom styles below */
-
-/* Hamburger Menu Styles */
+/* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
     top: 20px;
@@ -327,7 +329,6 @@ h1 i {
 }
 
 .menu-items ul li {
-    padding: 0;
     margin: 8px 20px;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -352,23 +353,23 @@ h1 i {
 .status-warning { color: var(--warning-color); }
 .status-error { color: var(--error-color); }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     .system-metrics {
         grid-template-columns: 1fr;
     }
-    
+
     header {
         text-align: center;
         justify-content: center;
     }
-    
+
     .dashboard {
         grid-template-columns: 1fr;
     }
 }
 
-/* Settings styles */
+/* Settings */
 .settings-section {
     padding: 15px;
     border-top: 1px solid var(--text-secondary);
