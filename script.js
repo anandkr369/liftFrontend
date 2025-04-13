@@ -16,6 +16,18 @@ async function submitFloorRequest(elevatorId) {
     return;
   }
 
+  const key = `${elevatorId}-floor-${floor}-timestamp`;
+  const lastRequestTime = localStorage.getItem(key);
+
+  // Check if the last request was made within the last 5 minutes
+  if (lastRequestTime) {
+    const elapsed = Date.now() - parseInt(lastRequestTime);
+    if (elapsed < 5 * 60 * 1000) {
+      alert("You can only request a floor once every 5 minutes.");
+      return;
+    }
+  }
+
   try {
     const res = await fetch(`${apiUrl}/floor-request`, {
       method: 'POST',
@@ -25,7 +37,6 @@ async function submitFloorRequest(elevatorId) {
 
     const result = await res.json();
     if (result.success) {
-      const key = `${elevatorId}-floor-${floor}-timestamp`;
       localStorage.setItem(key, Date.now().toString());
 
       updateRequestCountDisplay(elevatorId, floor, result.count);
