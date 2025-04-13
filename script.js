@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/api';
+const apiUrl = 'https://liftfrontend.onrender.com/api';
 let previousFloor = null;
 
 // Toggle floor dropdown
