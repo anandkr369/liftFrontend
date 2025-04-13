@@ -1,4 +1,5 @@
 const apiUrl = 'https://liftfrontend.onrender.com/api';
+// const apiUrl = 'http://localhost:3000/api';
 let previousFloor = null;
 
 // Toggle floor dropdown
@@ -41,7 +42,7 @@ async function submitFloorRequest(elevatorId) {
 
       updateRequestCountDisplay(elevatorId, floor, result.count);
 
-      // Auto-reset after 5 minutes
+      // Auto-reset after 5 minutes (client-side only)
       setTimeout(() => {
         resetFloorRequestClientSide(elevatorId, floor);
       }, 5 * 60 * 1000);
@@ -64,10 +65,7 @@ function resetFloorRequestClientSide(elevatorId, floor) {
   const key = `${elevatorId}-floor-${floor}-timestamp`;
   localStorage.removeItem(key);
 
-  const display = document.getElementById(`requestCount-${elevatorId}`);
-  if (display) {
-    display.textContent = `Floor ${floor}: 0`;
-  }
+  fetchAndUpdateFloorRequest(elevatorId, floor);
 }
 
 // Handle dropdown floor selection
@@ -77,30 +75,16 @@ function setupFloorDropdown(elevatorId) {
 
   select.addEventListener('change', () => {
     const floor = select.value;
-    const key = `${elevatorId}-floor-${floor}-timestamp`;
-    const timestamp = localStorage.getItem(key);
-
-    if (timestamp) {
-      const elapsed = Date.now() - parseInt(timestamp);
-      if (elapsed < 5 * 60 * 1000) {
-        fetchAndUpdateFloorRequest(elevatorId, floor);
-      } else {
-        resetFloorRequestClientSide(elevatorId, floor);
-      }
-    } else {
-      resetFloorRequestClientSide(elevatorId, floor);
-    }
+    fetchAndUpdateFloorRequest(elevatorId, floor);
   });
 }
 
 // Fetch floor request count from backend
 async function fetchAndUpdateFloorRequest(elevatorId, floor) {
   try {
-    const res = await fetch(`${apiUrl}/floor-request`);
+    const res = await fetch(`${apiUrl}/floor-request?elevatorId=${elevatorId}&floor=${floor}`);
     const data = await res.json();
-    const key = `${elevatorId}-floor-${floor}`;
-    const count = data[key] || 0;
-    updateRequestCountDisplay(elevatorId, floor, count);
+    updateRequestCountDisplay(elevatorId, floor, data.count || 0);
   } catch (error) {
     console.error('Error fetching floor requests:', error);
   }
