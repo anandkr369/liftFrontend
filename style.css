@@ -432,3 +432,42 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(20px);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.floor-request {
+    margin-top: 10px;
+}
+
+.floor-dropdown select, .floor-dropdown button {
+    margin-top: 5px;
+    padding: 4px;
+    font-size: 14px;
+}
+
+.request-btn {
+    background-color: #3a7afe;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.request-count {
+    margin-top: 5px;
+    font-weight: bold;
+}
