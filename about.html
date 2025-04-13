@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>About - Elevator Status Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="hamburger-menu">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
+    <div class="menu-items">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+        </ul>
+        <div class="settings-section">
+            <div class="theme-toggle">
+                <i class="light-icon">🌞</i>
+                <label class="switch">
+                    <input type="checkbox" id="themeSwitcher">
+                    <span class="slider"></span>
+                </label>
+                <i class="dark-icon">🌙</i>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-info-circle"></i> About Smart Elevator Monitor</h1>
+            <p class="last-update">Last updated: <span id="lastUpdate">Just now</span></p>
+        </header>
+
+        <div class="about-content">
+            <section id="intro">
+                <h2>Introduction</h2>
+                <p>This project provides a real-time monitoring system for elevators, utilizing IoT technologies like the ESP32 board, cloud computing through Adafruit IO, and a dynamic web interface to display elevator statuses.</p>
+            </section>
+
+            <section id="features">
+                <h2>Features</h2>
+                <ul>
+                    <li><strong>Real-Time Elevator Data:</strong> Fetches floor, door status, and movement information.</li>
+                    <li><strong>Request Management:</strong> Allows users to request a floor through the dashboard.</li>
+                    <li><strong>Cloud Integration:</strong> Uses Adafruit IO for cloud data storage and retrieval.</li>
+                    <li><strong>Animation and UI:</strong> Smooth animations and real-time updates for an interactive experience.</li>
+                </ul>
+            </section>
+
+            <section id="user-manual">
+                <h2>User Manual</h2>
+                <div class="manual-steps">
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <div class="step-content">
+                            <h3>Step 1: Connect the ESP32</h3>
+                            <p>Connect the ESP32 board to the elevator system and ensure it is connected to a stable Wi-Fi network.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="step-content">
+                            <h3>Step 2: Set up Adafruit IO</h3>
+                            <p>Set up the Adafruit IO account to fetch and monitor elevator data. Make sure all credentials are stored in the ESP32 device.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <div class="step-content">
+                            <h3>Step 3: Use the Dashboard</h3>
+                            <p>Access the web dashboard from your browser. The dashboard will display the real-time status of the elevators, including their current floor and door status.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <div class="step-content">
+                            <h3>Step 4: Report Issues</h3>
+                            <p>If any issues arise, click the "Report Issue" button to notify the admin for further action.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

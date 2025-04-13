@@ -471,3 +471,98 @@ input:checked + .slider:before {
     margin-top: 5px;
     font-weight: bold;
 }
+
+
+/* About Page Custom Styles */
+.about-content {
+    margin-top: 30px;
+}
+
+h2 {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 8px 0;
+}
+
+.manual-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.step-icon {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+}
+
+.step-content {
+    max-width: 600px;
+}
+
+.step-content h3 {
+    font-size: 20px;
+    color: var(--text-primary);
+}
+
+.step-content p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.step-content p strong {
+    color: var(--primary-color);
+}
+
+.step-icon, .step-content h3 {
+    transition: transform 0.3s ease;
+}
+
+.step:hover .step-icon {
+    transform: rotate(360deg);
+}
+
+.step:hover .step-content h3 {
+    color: var(--primary-color);
+}
+
+/* Responsive for About Page */
+@media (max-width: 768px) {
+    .manual-steps {
+        flex-direction: column;
+    }
+    .step {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .step-icon {
+        margin-bottom: 10px;
+    }
+}

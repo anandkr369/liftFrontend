@@ -1,11 +1,23 @@
-const apiUrl = 'https://liftfrontend.onrender.com/api';
-// const apiUrl = 'http://localhost:3000/api';
+const apiUrl = 'http://localhost:3000/api';
 let previousFloor = null;
 
 // Toggle floor dropdown
 function showFloorRequest(elevatorId) {
   const dropdown = document.getElementById(`dropdown-${elevatorId}`);
   dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
+
+// Check if a user can re-request a floor
+function canRequestAgain(elevatorId, floor) {
+  const key = `${elevatorId}-floor-${floor}-timestamp`;
+  const lastRequestTime = localStorage.getItem(key);
+
+  if (!lastRequestTime) {
+    return true; // Floor was reset or not yet requested
+  }
+
+  const elapsed = Date.now() - parseInt(lastRequestTime);
+  return elapsed >= 5 * 60 * 1000; // 5 minutes
 }
 
 // Submit a floor request
@@ -18,15 +30,10 @@ async function submitFloorRequest(elevatorId) {
   }
 
   const key = `${elevatorId}-floor-${floor}-timestamp`;
-  const lastRequestTime = localStorage.getItem(key);
 
-  // Check if the last request was made within the last 5 minutes
-  if (lastRequestTime) {
-    const elapsed = Date.now() - parseInt(lastRequestTime);
-    if (elapsed < 5 * 60 * 1000) {
-      alert("You can only request a floor once every 5 minutes.");
-      return;
-    }
+  if (!canRequestAgain(elevatorId, floor)) {
+    alert("You can only request this floor once every 5 minutes or after reset.");
+    return;
   }
 
   try {
@@ -39,7 +46,6 @@ async function submitFloorRequest(elevatorId) {
     const result = await res.json();
     if (result.success) {
       localStorage.setItem(key, Date.now().toString());
-
       updateRequestCountDisplay(elevatorId, floor, result.count);
 
       // Auto-reset after 5 minutes (client-side only)
@@ -60,12 +66,18 @@ function updateRequestCountDisplay(elevatorId, floor, count) {
   }
 }
 
-// Reset floor request (client-side only)
+// Reset floor request (client-side + backend)
 function resetFloorRequestClientSide(elevatorId, floor) {
   const key = `${elevatorId}-floor-${floor}-timestamp`;
   localStorage.removeItem(key);
 
-  fetchAndUpdateFloorRequest(elevatorId, floor);
+  fetch(`${apiUrl}/reset-floor-request`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ elevatorId, floor })
+  }).then(() => {
+    updateRequestCountDisplay(elevatorId, floor, 0);
+  }).catch(console.error);
 }
 
 // Handle dropdown floor selection
@@ -82,9 +94,11 @@ function setupFloorDropdown(elevatorId) {
 // Fetch floor request count from backend
 async function fetchAndUpdateFloorRequest(elevatorId, floor) {
   try {
-    const res = await fetch(`${apiUrl}/floor-request?elevatorId=${elevatorId}&floor=${floor}`);
+    const res = await fetch(`${apiUrl}/floor-request`);
     const data = await res.json();
-    updateRequestCountDisplay(elevatorId, floor, data.count || 0);
+    const key = `${elevatorId}-floor-${floor}`;
+    const count = data[key] || 0;
+    updateRequestCountDisplay(elevatorId, floor, count);
   } catch (error) {
     console.error('Error fetching floor requests:', error);
   }
@@ -152,6 +166,14 @@ async function fetchElevatorStatus() {
       if (previousFloor !== null && currentFloor !== null) {
         directionIcon.classList.toggle('fa-arrow-up', currentFloor > previousFloor);
         directionIcon.classList.toggle('fa-arrow-down', currentFloor < previousFloor);
+
+        // ✅ Reset all elevators if they had requests for the current floor
+        ['elevator1', 'elevator2', 'elevator3'].forEach(elevatorId => {
+          const key = `${elevatorId}-floor-${currentFloor}-timestamp`;
+          if (localStorage.getItem(key)) {
+            resetFloorRequestClientSide(elevatorId, currentFloor);
+          }
+        });
       }
 
       if (currentFloor !== null) {
@@ -173,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const elevators = ['elevator1', 'elevator2', 'elevator3'];
   elevators.forEach(setupFloorDropdown);
 
-  // Theme toggle persistence
   const themeToggle = document.getElementById("themeSwitcher");
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
