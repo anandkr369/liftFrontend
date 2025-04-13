@@ -19,6 +19,7 @@ async function submitFloorRequest(elevatorId) {
   const key = `${elevatorId}-floor-${floor}-timestamp`;
   const lastRequestTime = localStorage.getItem(key);
 
+  // Check if the last request was made within the last 5 minutes
   if (lastRequestTime) {
     const elapsed = Date.now() - parseInt(lastRequestTime);
     if (elapsed < 5 * 60 * 1000) {
@@ -58,25 +59,14 @@ function updateRequestCountDisplay(elevatorId, floor, count) {
   }
 }
 
-// Reset floor request (client-side and backend)
-async function resetFloorRequestClientSide(elevatorId, floor) {
+// Reset floor request (client-side only)
+function resetFloorRequestClientSide(elevatorId, floor) {
   const key = `${elevatorId}-floor-${floor}-timestamp`;
   localStorage.removeItem(key);
 
   const display = document.getElementById(`requestCount-${elevatorId}`);
   if (display) {
     display.textContent = `Floor ${floor}: 0`;
-  }
-
-  // Call backend to reset request count
-  try {
-    await fetch(`${apiUrl}/reset-floor-request`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ elevatorId, floor })
-    });
-  } catch (error) {
-    console.error('Error resetting floor request on server:', error);
   }
 }
 
