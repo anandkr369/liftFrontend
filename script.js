@@ -212,5 +212,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fetchElevatorStatus();
-  setInterval(fetchElevatorStatus, 1000);
+  setInterval(fetchElevatorStatus, 500);
 });
