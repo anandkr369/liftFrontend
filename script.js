@@ -1,4 +1,5 @@
-const apiUrl = 'https://liftfrontend.onrender.com/api';
+// const apiUrl = 'https://liftfrontend.onrender.com/api';
+const apiUrl = 'https://liftfrontend-hhm5.onrender.com/api';
 let previousFloor = null;
 
 // Toggle floor dropdown
@@ -144,9 +145,11 @@ document.getElementById('reportIssue')?.addEventListener('click', () => {
 });
 
 // Fetch elevator status from Render API
+//https://smartlift.onrender.com/api/elevator-status
 async function fetchElevatorStatus() {
   try {
-    const response = await fetch('https://smartlift.onrender.com/api/elevator-status');
+    // const response = await fetch('https://smartlift.onrender.com/api/elevator-status');
+    const response = await fetch('https://smartlift-b6cq.onrender.com/api/elevator-status');
     const json = await response.json();
 
     if (json.status === 'success' && json.data?.value) {
